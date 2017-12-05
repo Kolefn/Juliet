@@ -1,0 +1,9 @@
+## Interface: 70300
+## Title: Juliet
+## Notes: A baby J.A.R.V.I.S. Juliet helps improve your quality of life by chatting with you and doing redundant tasks!
+## Author: Kole Nunley
+## SavedVariables: JulietsMemory
+
+Juliet.lua
+Popups.lua
+Events.lua
