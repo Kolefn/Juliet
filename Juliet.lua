@@ -1,39 +1,32 @@
 
 
 local Juliet = CreateFrame('Frame','JulietFrame');  --create the basic juliet frame
-Juliet_FunctionQueue = {} -- for functions that need to be called after certain time
-Juliet_Callbacks = {}
 Juliet:SetScript('OnEvent', function(self, event, ...) self[event](self, ...) end) --set all events
-Juliet:RegisterEvent('ADDON_LOADED')
-Juliet:RegisterEvent('PLAYER_LOGIN')
-
-
--- Cache Loaded 
-
-function Juliet:ADDON_LOADED()
-  self:RemoveEvent('ADDON_LOADED')
-  JulietsMemory = JulietsMemory or {} --use stored variable for memory if exists, otherwise create new table for her memory
-end
-
-
--- Server Ready
-
-function Juliet:PLAYER_LOGIN()
-  self:RemoveEvent('PLAYER_LOGIN')
-  print("Juliet: Hi, how are you?")
-  self:SetupEvents()
-end
-
-
-function Juliet:SetupEvents()
-  self:RegisterEvent('PLAYER_DEAD') -- for popups
-end
-
-
+Juliet_FunctionQueue = {} -- for functions that need to be called after certain time
+Juliet_Callbacks = {} -- store all callbacks in this table
 
 function Juliet:RemoveEvent(event)
   self:UnregisterEvent(event)
   self[event] = nil
+end
+
+function Juliet:AddCallback(eventName,name,func)
+  self:RegisterEvent(eventName) 
+  local event = Juliet_Callbacks[eventName] or {}
+  event[name] = function() func() end;
+  Juliet_Callbacks[eventName] = event
+end
+
+function Juliet:FireCallbacks(event)
+	local none = true
+	local callbacks = Juliet_Callbacks[event] or {}
+	for name,callback in pairs(callbacks) do
+		none = false
+		callback() 
+	end
+	if (none) then					-- if nothing is to be done after an event, remove it
+		self:UnregisterEvent(event)
+	end
 end
 
 
@@ -47,6 +40,7 @@ local function DeQueue()
 	end
 
 end
+
 
 Juliet:SetScript('OnUpdate', DeQueue)
 

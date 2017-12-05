@@ -1,27 +1,26 @@
 
-local function FireCallbacks(event)
-	local none = true
-	local callbacks = Juliet_Callbacks[event] or {}
-	for name,callback in pairs(callbacks) do
-		none = false
-		callback() 
-	end
-	if (none) then					-- if nothing is to be done after an event, remove it
-		JulietFrame:UnregisterEvent(event)
-	end
+local Juliet = JulietFrame
+
+
+-- ====== ROOT CALLBACKS =======
+
+function Juliet:ADDON_LOADED()
+  Juliet:FireCallbacks("ADDON_LOADED")
 end
 
--- ====== EVENTS =======
-
-function JulietFrame:PLAYER_DEAD()
-	FireCallbacks("PLAYER_DEAD")
-	StaticPopup_Show("JULIET_AUTO_ACCEPT_RESURRECT")
-	StaticPopup_Show("JULIET_AUTO_RELEASE_SPIRIT")
+function Juliet:PLAYER_LOGIN()
+  Juliet:FireCallbacks("PLAYER_LOGIN")
 end
 
 
-function JulietFrame:CORPSE_IN_RANGE()
-	FireCallbacks("CORPSE_IN_RANGE") 
+
+function Juliet:PLAYER_DEAD()
+	Juliet:FireCallbacks("PLAYER_DEAD")
+end
+
+
+function Juliet:CORPSE_IN_RANGE()
+	 Juliet:FireCallbacks("CORPSE_IN_RANGE") 
 end
 
 
