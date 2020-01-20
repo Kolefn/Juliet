@@ -1,2 +1,2 @@
 # Juliet
-Meet Juliet, your personal assistant in a World of Warcraft add-on.
+A tiny first-time World of Warcraft add-on. If I can remember correctly, it greets you upon login and auto-resurrects your character. 
